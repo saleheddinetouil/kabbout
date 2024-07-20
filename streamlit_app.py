@@ -155,7 +155,7 @@ for i, (player_name, player) in enumerate(game.players.items()):
     with cols[i]:
         round_scores[player_name] = st.number_input(
             f"Adjust {player_name}'s score:", 
-            value=100, 
+            value=0, 
             key=f"input_{player_name}", # Unique key 
               step=50 
         )
