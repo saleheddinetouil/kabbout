@@ -123,7 +123,7 @@ st.title("Tunisian Rami Scorekeeper 🃏🇹🇳")
 
 # --- Game Setup (Sidebar) ---
 st.sidebar.header("Game Setup")
-num_players = st.sidebar.number_input("Number of Players:", min_value=2, max_value=4, value=2)
+num_players = st.sidebar.number_input("Number of Players:", min_value=2, max_value=4, value=4)
 default_player_names = ["Saleh", "Achref", "Morta", "Khalil"]
 player_names = [st.sidebar.text_input(f"Player {i+1} Name:", value=default_player_names[i])
                 for i in range(num_players)]
