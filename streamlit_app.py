@@ -179,8 +179,13 @@ else:
 st.header("Round Based Scores")
 if game.round_history:
     for i, round_scores in enumerate(game.round_history):
-        st.subheader(f"Round {i+1}")
+        if sum(round_scores.values()) == 0:
+            st.subheader(f"Round {i+1} (Frish Round)")
+        else:
+            st.subheader(f"Round {i+1}")
         st.bar_chart(pd.DataFrame([round_scores]).transpose())
+        # if no scores added then its a frish rouncd
+        
 else:
     st.write("No rounds recorded yet.")
-    
+
