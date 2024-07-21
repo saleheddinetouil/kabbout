@@ -175,11 +175,12 @@ if game.round_history:
 else:
     st.write("No rounds recorded yet.") 
 
-# display round based chart
-st.header("Round Scores  📊")
+# display round based bars chart each round will display the added scores
+st.header("Round Based Scores")
 if game.round_history:
-    st.line_chart(game.get_round_history_dataframe())
+    for i, round_scores in enumerate(game.round_history):
+        st.subheader(f"Round {i+1}")
+        st.bar_chart(pd.DataFrame([round_scores]).transpose())
 else:
     st.write("No rounds recorded yet.")
-
     
