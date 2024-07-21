@@ -174,3 +174,12 @@ if game.round_history:
     st.table(game.get_round_history_dataframe())
 else:
     st.write("No rounds recorded yet.") 
+
+# display round based chart
+st.header("Round Scores  📊")
+if game.round_history:
+    st.line_chart(game.get_round_history_dataframe())
+else:
+    st.write("No rounds recorded yet.")
+
+    
