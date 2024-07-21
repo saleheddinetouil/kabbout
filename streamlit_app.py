@@ -181,6 +181,9 @@ if game.round_history:
     for i, round_scores in enumerate(game.round_history):
         if sum(round_scores.values()) == 0:
             st.subheader(f"Round {i+1} (Frish Round)")
+        # elif one score added then its a frish rouncd
+        elif sum(round_scores.values()) == 100 or sum(round_scores.values()) == 150:
+            st.subheader(f"Round {i+1} Ghlot feha {list(round_scores.keys())[0]}")
         else:
             st.subheader(f"Round {i+1}")
         st.bar_chart(pd.DataFrame([round_scores]).transpose())
