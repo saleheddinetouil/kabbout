@@ -139,10 +139,14 @@ for i, (player_name, player) in enumerate(game.players.items()):
               step=50 
         )
 
+
 if st.button("Record Round  ➡️"):
     game.record_round(round_scores)
     st.experimental_rerun()  # Refresh the app
-
+    # return inputs to zero
+    for col in cols:
+        col.empty()
+        st.experimental_rerun()
 # --- Display Scores ---
 st.header("Current Scores  🏆")
 st.bar_chart(pd.DataFrame([game.get_current_scores()]).transpose())
