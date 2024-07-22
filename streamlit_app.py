@@ -81,7 +81,6 @@ class TunisianRamiGame:
                 self.players[name].score = round_scores[-1] if round_scores else 0
 
             self.round_history = game_data["round_history"] 
-            st.success("Game Loaded!")
         else:
             st.warning("No saved game found. Starting a new game.")
 
