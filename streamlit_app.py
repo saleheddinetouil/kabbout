@@ -59,6 +59,7 @@ class TunisianRamiGame:
         df.index.name = "Round"
         df.index += 1
         return df
+    
     def save_game(self, filename="rami_game.json"):
         """Saves the game state to a JSON file."""
         game_data = {
@@ -80,31 +81,6 @@ class TunisianRamiGame:
                 self.players[name].score = round_scores[-1] if round_scores else 0
 
             self.round_history = game_data["round_history"] 
-        else:
-            st.warning("No saved game found. Starting a new game.")
-    def auto_save(self, filename="rami_game.json"):
-        """Saves the game state to a JSON file."""
-        game_data = {
-            "players": {name: player.round_scores for name, player in self.players.items()},
-            "round_history": self.round_history
-        }
-        with open(filename, 'w') as f:
-            json.dump(game_data, f)
-
-        st.success("Game saved!")
-
-    def auto_load(self, filename="rami_game.json"):
-        """Loads the game state from a JSON file."""
-        if os.path.exists(filename):
-            with open(filename, 'r') as f:
-                game_data = json.load(f)
-
-            self.players = {name: Player(name) for name in game_data["players"]}
-            for name, round_scores in game_data["players"].items():
-                self.players[name].round_scores = round_scores
-                self.players[name].score = round_scores[-1] if round_scores else 0
-
-            self.round_history = game_data["round_history"]
             st.success("Game Loaded!")
         else:
             st.warning("No saved game found. Starting a new game.")
@@ -114,8 +90,6 @@ class TunisianRamiGame:
         self.players = {name: Player(name) for name in self.players}
         self.round_history = []
     
-
-
 
 # --- Streamlit App UI ---
 
@@ -127,24 +101,26 @@ num_players = st.sidebar.number_input("Number of Players:", min_value=2, max_val
 default_player_names = ["Saleh", "Achref", "Morta", "Khalil"]
 player_names = [st.sidebar.text_input(f"Player {i+1} Name:", value=default_player_names[i])
                 for i in range(num_players)]
-## where to use auto_save and auto_load
-## tell
+
 # --- Initialize or Load Game ---
 if 'game' not in st.session_state:
     st.session_state.game = TunisianRamiGame(player_names)
 game = st.session_state.game
 
 if st.sidebar.button("New Game"):
-    game = TunisianRamiGame(player_names)
+    game.reset_game()
+    game.players = {name: Player(name) for name in player_names}
     st.session_state.game = game
+    st.session_state.round_scores = {} # Reset round scores in session state
 if st.sidebar.button("Save Game"):
-    game.save_game()
-    st.sidebar.success("Game saved!")
+    game.auto_save()
 if st.sidebar.button("Load Game"):
-    game.load_game()
-    st.session_state.game = game
-    st.sidebar.success("Game loaded!")
-
+    game.auto_load()
+    st.session_state.game = game 
+    # Update round scores in session state 
+    st.session_state.round_scores = {player.name: player.round_scores for player.name, player in game.players.items()}
+    
+    
 
 # --- Gameplay Section ---
 st.header("Score Adjustments  🎲")
@@ -191,4 +167,3 @@ if game.round_history:
         
 else:
     st.write("No rounds recorded yet.")
-
