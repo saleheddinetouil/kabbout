@@ -103,6 +103,11 @@ player_names = [st.sidebar.text_input(f"Player {i+1} Name:", value=name) for i, 
 # --- Initialize or Load Game ---
 if 'game' not in st.session_state:
     st.session_state.game = TunisianRamiGame(player_names)
+else :
+    game = st.session_state.game
+    for player in game.players.values():
+        player.load_round_scores()
+        
 game = st.session_state.game
 
 if st.sidebar.button("New Game"):
