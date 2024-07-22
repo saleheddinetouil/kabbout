@@ -113,13 +113,14 @@ if st.sidebar.button("New Game"):
     st.session_state.game = game
     st.session_state.round_scores = {} # Reset round scores in session state
 if st.sidebar.button("Save Game"):
-    game.auto_save()
+    game.save_game()
 if st.sidebar.button("Load Game"):
     game.auto_load()
     st.session_state.game = game 
     # Update round scores in session state 
     st.session_state.round_scores = {player.name: player.round_scores for player.name, player in game.players.items()}
-    
+
+
     
 
 # --- Gameplay Section ---
