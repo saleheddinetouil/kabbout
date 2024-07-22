@@ -112,18 +112,11 @@ if st.sidebar.button("New Game"):
     game.players = {name: Player(name) for name in player_names}
     st.session_state.game = game
     st.session_state.round_scores = {} # Reset round scores in session state
-if st.sidebar.button("Save Game"):
-    game.save_game()
-    st.session_state.game = game
-    st.success("Game Saved!")
-if st.sidebar.button("Load Game"):
-    game.load_game()
-    st.session_state.game = game 
-    # Update round scores in session state 
-    st.session_state.round_scores = {player.name: player.round_scores for player.name, player in game.players.items()}
-    st.success("Game Loaded!")
+
 else: 
     game.load_game()
+    st.session_state.game = game  # Save the game in session state
+    
 
 # --- Save Round Scores ---
 
@@ -147,11 +140,10 @@ for i, (player_name, player) in enumerate(game.players.items()):
 
 if st.button("Record Round  ➡️"):
     game.record_round(round_scores)
+    game.save_game()
+    st.session_state.game = game
     st.experimental_rerun()  # Refresh the app
-    # return inputs to zero
-    for col in cols:
-        col.empty()
-        st.experimental_rerun()
+    
 # --- Display Scores ---
 st.header("Current Scores  🏆")
 st.bar_chart(pd.DataFrame([game.get_current_scores()]).transpose())
