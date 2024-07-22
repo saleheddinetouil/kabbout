@@ -99,8 +99,7 @@ st.title("Tunisian Rami Scorekeeper 🃏🇹🇳")
 st.sidebar.header("Game Setup")
 num_players = st.sidebar.number_input("Number of Players:", min_value=2, max_value=4, value=4)
 default_player_names = ["Saleh", "Achref", "Morta", "Khalil"]
-player_names = [st.sidebar.text_input(f"Player {i+1} Name:", value=default_player_names[i])
-                for i in range(num_players)]
+player_names = st.sidebar.multiselect("Select Player Names:", default=default_player_names, options=default_player_names)
 
 # --- Initialize or Load Game ---
 if 'game' not in st.session_state:
@@ -116,10 +115,6 @@ if st.sidebar.button("New Game"):
 else: 
     game.load_game()
     st.session_state.game = game  # Save the game in session state
-    
-
-# --- Save Round Scores ---
-
 
     
 
