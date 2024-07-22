@@ -111,7 +111,7 @@ if st.sidebar.button("New Game"):
     game.players = {name: Player(name) for name in player_names}
     st.session_state.game = game
     st.session_state.round_scores = {} # Reset round scores in session state
-
+    game.save_game()
 else: 
     game.load_game()
     st.session_state.game = game  # Save the game in session state
