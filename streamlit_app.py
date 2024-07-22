@@ -97,9 +97,9 @@ st.title("Tunisian Rami Scorekeeper 🃏🇹🇳")
 
 # --- Game Setup (Sidebar) ---
 st.sidebar.header("Game Setup")
-num_players = st.sidebar.number_input("Number of Players:", min_value=2, max_value=4, value=4)
+
 default_player_names = ["Saleh", "Achref", "Morta", "Khalil"]
-player_names = st.sidebar.multiselect("Select Player Names:", default=default_player_names, options=default_player_names)
+player_names = st.sidebar.multiselect("Select Player Names:", default=default_player_names)
 
 # --- Initialize or Load Game ---
 if 'game' not in st.session_state:
