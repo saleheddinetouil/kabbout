@@ -121,11 +121,7 @@ if st.sidebar.button("Load Game"):
     st.session_state.game = game 
     # Update round scores in session state 
     st.session_state.round_scores = {player.name: player.round_scores for player.name, player in game.players.items()}
-game.load_game()
-st.session_state.game = game 
-# Update round scores in session state 
-st.session_state.round_scores = {player.name: player.round_scores for player.name, player in game.players.items()}
-
+    st.success("Game Loaded!")
 
     
 
