@@ -143,8 +143,6 @@ if st.button("Record Round  ➡️"):
     # reset score inputs to 0
     for col in cols:
         col.empty()
-    # Reset round scores in session state
-    st.session_state.round_scores = {}
     st.session_state.game = game
     st.experimental_rerun()  # Refresh the app
     
