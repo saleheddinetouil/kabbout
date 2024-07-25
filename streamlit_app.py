@@ -89,10 +89,7 @@ class TunisianRamiGame:
         self.players = {name: Player(name) for name in self.players}
         self.round_history = []
     
-    def reset_input_fields(self):
-        """Resets the input fields in the sidebar."""
-        for name in self.players:
-            st.session_state[f"input_{name}"] = 0
+
         
     
 
