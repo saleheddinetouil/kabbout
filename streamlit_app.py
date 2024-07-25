@@ -89,6 +89,12 @@ class TunisianRamiGame:
         self.players = {name: Player(name) for name in self.players}
         self.round_history = []
     
+    def reset_input_fields(self):
+        """Resets the input fields in the sidebar."""
+        for name in self.players:
+            st.session_state[f"input_{name}"] = 0
+        
+    
 
 # --- Streamlit App UI ---
 
@@ -112,6 +118,7 @@ if st.sidebar.button("New Game"):
     st.session_state.game = game
     st.session_state.round_scores = {} # Reset round scores in session state
     game.save_game()
+
 else: 
     game.load_game()
     st.session_state.game = game  # Save the game in session state
