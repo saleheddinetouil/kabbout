@@ -140,6 +140,11 @@ for i, (player_name, player) in enumerate(game.players.items()):
 if st.button("Record Round  ➡️"):
     game.record_round(round_scores)
     game.save_game()
+    # reset score inputs to 0
+    for col in cols:
+        col.empty()
+    # Reset round scores in session state
+    st.session_state.round_scores = {}
     st.session_state.game = game
     st.experimental_rerun()  # Refresh the app
     
