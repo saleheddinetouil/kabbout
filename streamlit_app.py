@@ -99,8 +99,8 @@ st.title("Tunisian Rami Scorekeeper 🃏🇹🇳")
 
 # --- Game Setup (Sidebar) ---
 st.sidebar.header("Game Setup")
-num_players = st.sidebar.number_input("Number of Players:", min_value=2, max_value=5, value=4)
-default_player_names = ["Saleh", "Achref", "Morta", "Khalil"]
+num_players = st.sidebar.number_input("Number of Players:", min_value=2, max_value=5, value=5)
+default_player_names = ["Saleh", "Achref", "Morta", "Elyes", "Khalil"]
 player_names = [st.sidebar.text_input(f"Player {i+1} Name:", value=name) for i, name in enumerate(default_player_names[:num_players])]
 
 # --- Initialize or Load Game ---
