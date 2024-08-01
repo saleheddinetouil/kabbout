@@ -144,7 +144,7 @@ if st.button("Record Round  ➡️"):
     for col in cols:
         col.empty()
     st.session_state.game = game
-    st.experimental_rerun()  # Refresh the app
+    
     
 # --- Display Scores ---
 st.header("Current Scores  🏆")
