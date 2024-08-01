@@ -141,9 +141,6 @@ if st.button("Record Round  ➡️"):
     game.record_round(round_scores)
     game.save_game()
     # reset score inputs to 0
-    for col in cols:
-        col.empty()
-    st.session_state.game = game
     
     
 # --- Display Scores ---
