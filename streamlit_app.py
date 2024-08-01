@@ -11,7 +11,7 @@ class Player:
     def __init__(self, name: str):
         self.name = name
         self.score = 0
-        self.round_scores = []
+        self.round_scores = [] 
 
     def update_score(self, score_change: int):
         """Updates the player's score and tracks round history."""
