@@ -141,6 +141,7 @@ if st.button("Record Round  ➡️"):
     game.record_round(round_scores)
     game.save_game()
     # reset score inputs to 0
+    st.experimental_rerun()
     
     
 # --- Display Scores ---
