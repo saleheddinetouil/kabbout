@@ -100,7 +100,7 @@ st.title("Tunisian Rami Scorekeeper 🃏🇹🇳")
 # --- Game Setup (Sidebar) ---
 st.sidebar.header("Game Setup")
 num_players = st.sidebar.number_input("Number of Players:", min_value=2, max_value=5, value=5)
-default_player_names = ["Saleh", "Achref", "Morta", "Elyes", "Khalil"]
+default_player_names = ["Saleh", "Achref", "Morta", "Khalil"]
 player_names = [st.sidebar.text_input(f"Player {i+1} Name:", value=name) for i, name in enumerate(default_player_names[:num_players])]
 
 # --- Initialize or Load Game ---
@@ -131,7 +131,7 @@ for i, (player_name, player) in enumerate(game.players.items()):
     with cols[i]:
         round_scores[player_name] = st.number_input(
             f"Adjust {player_name}'s score:", 
-            value=0, 
+            value=100, 
             key=f"input_{player_name}", # Unique key 
               step=50 
         )
@@ -141,7 +141,7 @@ if st.button("Record Round  ➡️"):
     game.record_round(round_scores)
     game.save_game()
     # reset score inputs to 0
-    st.experimental_rerun()
+    # st.experimental_rerun()
     
     
 # --- Display Scores ---
