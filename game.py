@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import json
+import streamlit as st
 
 class Player:
     def __init__(self, name: str):
@@ -25,6 +26,7 @@ class TunisianRamiGame:
         self.round_history.append(round_scores)
         for name, score_change in round_scores.items():
             self.players[name].update_score(score_change)
+        self.save_to_session()
 
     def get_current_scores(self) -> dict[str, int]:
         return {player.name: player.score for player in self.players.values()}
@@ -39,25 +41,19 @@ class TunisianRamiGame:
     def reset_game(self):
         self.players = {name: Player(name) for name in self.players}
         self.round_history = []
+        self.save_to_session()
 
-    def save_game(self, filename="rami_game.json"):
-        game_data = {
+    def save_to_session(self):
+        st.session_state.game_state = {
             "players": {name: player.round_scores for name, player in self.players.items()},
             "round_history": self.round_history
         }
-        with open(filename, 'w') as f:
-            json.dump(game_data, f)
 
-    def load_game(self, filename="rami_game.json"):
-        if os.path.exists(filename):
-            with open(filename, 'r') as f:
-                game_data = json.load(f)
-
-            self.players = {name: Player(name) for name in game_data["players"]}
-            for name, round_scores in game_data["players"].items():
+    def load_from_session(self):
+        if "game_state" in st.session_state:
+            game_state = st.session_state.game_state
+            self.players = {name: Player(name) for name in game_state["players"]}
+            for name, round_scores in game_state["players"].items():
                 self.players[name].round_scores = round_scores
                 self.players[name].score = round_scores[-1] if round_scores else 0
-
-            self.round_history = game_data["round_history"]
-        else:
-            raise FileNotFoundError("No saved game found.")
+            self.round_history = game_state["round_history"]
