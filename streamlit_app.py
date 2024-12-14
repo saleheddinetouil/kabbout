@@ -7,6 +7,7 @@ st.set_page_config(page_title="Tunisian Rami Scorekeeper", page_icon="🃏", lay
 def initialize_game(player_names):
     if 'game' not in st.session_state:
         st.session_state.game = TunisianRamiGame(player_names)
+        st.session_state.game.load_from_session()
 
 def main():
     st.title("Tunisian Rami Scorekeeper 🃏🇹🇳")
@@ -36,7 +37,6 @@ def main():
     if st.button("Record Round ➡️"):
         game.record_round(round_scores)
         st.success("Round recorded!")
-        game.save_game()
 
     st.header("Current Scores 🏆")
     st.bar_chart(pd.DataFrame([game.get_current_scores()]).transpose())
