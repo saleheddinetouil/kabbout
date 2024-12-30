@@ -1,6 +1,4 @@
 import pandas as pd
-import os
-import json
 import streamlit as st
 
 class Player:
