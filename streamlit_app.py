@@ -9,13 +9,13 @@ st.set_page_config(page_title="Tunisian Rami Scorekeeper", page_icon="🃏", lay
 def initialize_game(player_names):
     if 'game' not in st.session_state:
         st.session_state.game = TunisianRamiGame(player_names)
-        st.session_state.game.load_from_session()
+        st.session_state.game.load_from_json()
 
 def auto_save():
     while True:
         if 'game' in st.session_state:
             game = st.session_state.game
-            game.save_to_session()
+            game.save_to_json()
         time.sleep(60)
 
 def main():
