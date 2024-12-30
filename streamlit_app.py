@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 from game import TunisianRamiGame, Player
+import threading
+import time
 
 st.set_page_config(page_title="Tunisian Rami Scorekeeper", page_icon="🃏", layout="wide")
 
@@ -8,6 +10,13 @@ def initialize_game(player_names):
     if 'game' not in st.session_state:
         st.session_state.game = TunisianRamiGame(player_names)
         st.session_state.game.load_from_session()
+
+def auto_save():
+    while True:
+        if 'game' in st.session_state:
+            game = st.session_state.game
+            game.save_to_session()
+        time.sleep(60)
 
 def main():
     st.title("Tunisian Rami Scorekeeper 🃏🇹🇳")
@@ -56,4 +65,5 @@ def main():
         st.write("No rounds recorded yet.")
 
 if __name__ == "__main__":
+    threading.Thread(target=auto_save, daemon=True).start()
     main()
