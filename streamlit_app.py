@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
-from game import TunisianRamiGame, Player
+import plotly.graph_objects as go
+from game import TunisianRamiGame, Player  # Assuming your game logic is in 'game.py'
 import threading
 import time
 
@@ -17,6 +18,54 @@ def auto_save():
             game = st.session_state.game
             game.save_to_json()
         time.sleep(60)
+
+def create_ctf_scoreboard(game):
+    """
+    Creates a CTF-style scoreboard that shows the current ranking and cumulative scores
+    after each round, similar to how a CTF scoreboard evolves over time.
+    """
+    if not game.round_history:
+        st.write("No rounds recorded yet.")
+        return
+
+    # Create a DataFrame to hold the cumulative scores after each round
+    scoreboard_data = []
+    cumulative_scores = {player: 0 for player in game.players} 
+
+    for round_num, round_scores in enumerate(game.round_history):
+        for player, score in round_scores.items():
+            cumulative_scores[player] += score
+        
+        # Sort players by cumulative score after each round
+        sorted_scores = sorted(cumulative_scores.items(), key=lambda x: x[1], reverse=True)
+        scoreboard_data.append(sorted_scores)
+
+    # Prepare data for the Plotly table
+    rounds = list(range(1, len(game.round_history) + 1))
+    players = list(game.players.keys())
+    header_values = ['Round'] + players
+    cell_values = [rounds]
+
+    for player in players:
+        player_scores = []
+        for round_data in scoreboard_data:
+            score = next((score for p, score in round_data if p == player), 0)
+            player_scores.append(score)
+        cell_values.append(player_scores)
+    
+    
+    # Create the Plotly table
+    fig = go.Figure(data=[go.Table(
+        header=dict(values=header_values,
+                    fill_color='paleturquoise',
+                    align='left'),
+        cells=dict(values=cell_values,
+                   fill_color='lavender',
+                   align='left'))
+    ])
+
+    fig.update_layout(title="CTF-Style Scoreboard (Cumulative Scores by Round)")
+    st.plotly_chart(fig)
 
 def main():
     st.title("Tunisian Rami Scorekeeper 🃏🇹🇳")
@@ -47,17 +96,12 @@ def main():
         game.record_round(round_scores)
         st.success("Round recorded!")
 
-    # Replace the section to display the current scores as a CTF scoreboard
-    st.header("Current Scores 🏆")
-    current_scores_df = pd.DataFrame({
-        'Player': list(game.get_current_scores().keys()),
-        'Score': list(game.get_current_scores().values())
-    })
-    current_scores_df = current_scores_df.sort_values(by='Score', ascending=False).reset_index(drop=True)
-    st.table(current_scores_df)
-    
-    # Replace the section to display the round based scores as line charts
-    st.header("Round Based Scores")
+    # CTF-style scoreboard
+    st.header("CTF-Style Scoreboard 🏆")
+    create_ctf_scoreboard(game)
+
+    # Round Based Scores as Line Charts (Similar to your original code)
+    st.header("Round Based Scores (Line Chart)")
     if game.round_history:
         rounds = list(range(1, len(game.round_history) + 1))
         round_scores_df = pd.DataFrame(game.round_history)
@@ -66,18 +110,10 @@ def main():
         st.line_chart(round_scores_df.pivot(index='Round', columns='Player', values='Score'))
     else:
         st.write("No rounds recorded yet.")
-    
+
     st.header("Round History 📚")
     if game.round_history:
         st.table(game.get_round_history_dataframe())
-    else:
-        st.write("No rounds recorded yet.")
-
-    st.header("Round Based Scores")
-    if game.round_history:
-        for i, round_scores in enumerate(game.round_history):
-            st.subheader(f"Round {i+1}")
-            st.bar_chart(pd.DataFrame([round_scores]).transpose())
     else:
         st.write("No rounds recorded yet.")
 
