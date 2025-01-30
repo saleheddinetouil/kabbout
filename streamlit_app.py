@@ -48,7 +48,7 @@ def main():
         st.success("Round recorded!")
 
     st.header("Current Scores 🏆")
-    current_scores_df = pd.DataFrame({k: [v] for k, v in game.get_current_scores().items()})
+    current_scores_df = pd.DataFrame([{k: v for k, v in game.get_current_scores().items()}])
     st.line_chart(current_scores_df)
     
     st.header("Round History 📚")
