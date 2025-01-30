@@ -50,17 +50,20 @@ def main():
     # Replace the section to display the current scores as a CTF scoreboard
     st.header("Current Scores 🏆")
     current_scores_df = pd.DataFrame({
-    'Player': list(game.get_current_scores().keys()),
-    'Score': list(game.get_current_scores().values())
-})
+        'Player': list(game.get_current_scores().keys()),
+        'Score': list(game.get_current_scores().values())
+    })
     current_scores_df = current_scores_df.sort_values(by='Score', ascending=False).reset_index(drop=True)
     st.table(current_scores_df)
-
-# Replace the section to display the round based scores as line charts
+    
+    # Replace the section to display the round based scores as line charts
     st.header("Round Based Scores")
     if game.round_history:
+        rounds = list(range(1, len(game.round_history) + 1))
         round_scores_df = pd.DataFrame(game.round_history)
-        st.line_chart(round_scores_df)
+        round_scores_df['Round'] = rounds
+        round_scores_df = round_scores_df.melt(id_vars=['Round'], var_name='Player', value_name='Score')
+        st.line_chart(round_scores_df.pivot(index='Round', columns='Player', values='Score'))
     else:
         st.write("No rounds recorded yet.")
     
